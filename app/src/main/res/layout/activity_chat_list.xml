@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+        android:background="@color/white" android:elevation="4dp" android:gravity="center_vertical"
+        android:paddingHorizontal="8dp" android:orientation="horizontal">
+        <ImageButton android:id="@+id/btnBack" android:layout_width="40dp" android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert" android:scaleType="centerInside" />
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="私信" android:textSize="18sp"
+            android:textStyle="bold" android:layout_marginStart="8dp" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerConversations"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:clipToPadding="false" android:padding="8dp" />
+    <TextView android:id="@+id/tvEmpty" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:gravity="center"
+        android:text="💬\n\n还没有会话\n在表白详情页给TA发私信吧" android:textSize="16sp"
+        android:textColor="@color/gray" android:visibility="gone" />
+</LinearLayout>

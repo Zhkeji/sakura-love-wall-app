@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+        android:background="@color/white" android:elevation="4dp" android:gravity="center_vertical"
+        android:paddingHorizontal="8dp" android:orientation="horizontal">
+        <ImageButton android:id="@+id/btnBack" android:layout_width="40dp" android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert" android:scaleType="centerInside" />
+        <TextView android:id="@+id/tvToolbarTitle" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="帖子详情" android:textSize="18sp" android:textStyle="bold"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:fillViewport="true">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical">
+                <ImageView android:id="@+id/imgAvatar" android:layout_width="44dp"
+                    android:layout_height="44dp" android:src="@android:drawable/sym_def_app_icon" />
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                    <TextView android:id="@+id/tvAuthor" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textSize="16sp"
+                        android:textStyle="bold" android:textColor="@color/black" />
+                    <TextView android:id="@+id/tvTime" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textSize="13sp"
+                        android:textColor="@color/lightGray" />
+                </LinearLayout>
+                <Button android:id="@+id/btnChat" android:layout_width="wrap_content"
+                    android:layout_height="36dp" android:text="私信" android:textSize="13sp"
+                    android:textColor="@color/colorPrimary" android:visibility="gone"
+                    android:backgroundTint="#fde8ee" />
+            </LinearLayout>
+            <TextView android:id="@+id/tvTitle" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textSize="20sp"
+                android:textStyle="bold" android:textColor="@color/black"
+                android:layout_marginTop="16dp" />
+            <TextView android:id="@+id/tvContent" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textSize="15sp"
+                android:textColor="@color/black" android:lineSpacingMultiplier="1.4"
+                android:layout_marginTop="12dp" />
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerImages"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+            <TextView android:id="@+id/tvTags" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="12dp"
+                android:textSize="13sp" android:textColor="@color/colorPrimary" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginTop="16dp"
+                android:paddingVertical="12dp" android:gravity="center_vertical"
+                android:background="@color/white" android:paddingHorizontal="16dp">
+                <TextView android:id="@+id/btnLike" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:textSize="14sp"
+                    android:textColor="@color/gray" android:padding="8dp" />
+                <TextView android:id="@+id/tvCommentCount" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:textSize="14sp"
+                    android:textColor="@color/gray" android:layout_marginStart="16dp"
+                    android:padding="8dp" />
+            </LinearLayout>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="评论" android:textSize="16sp" android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+            <LinearLayout android:id="@+id/commentsContainer" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical"
+                android:layout_marginTop="8dp" />
+            <TextView android:id="@+id/tvNoComments" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="暂无评论"
+                android:textSize="14sp" android:textColor="@color/lightGray"
+                android:gravity="center" android:paddingVertical="24dp" />
+        </LinearLayout>
+    </ScrollView>
+    <!-- Comment input -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="@color/white" android:elevation="8dp"
+        android:paddingHorizontal="12dp" android:paddingVertical="8dp"
+        android:gravity="center_vertical" android:orientation="horizontal">
+        <EditText android:id="@+id/etComment" android:layout_width="0dp"
+            android:layout_height="40dp" android:layout_weight="1"
+            android:background="@drawable/bg_input" android:hint="写下你的评论..."
+            android:textSize="14sp" android:maxLines="1" />
+        <Button android:id="@+id/btnSend" android:layout_width="wrap_content"
+            android:layout_height="40dp" android:text="发送" android:textSize="14sp"
+            android:textColor="@color/white" android:backgroundTint="@color/colorPrimary"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+</LinearLayout>

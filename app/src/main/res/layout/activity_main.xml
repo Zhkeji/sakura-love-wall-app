@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg">
+    <!-- Toolbar -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+        android:background="@color/white" android:elevation="4dp" android:gravity="center_vertical"
+        android:paddingHorizontal="16dp" android:orientation="horizontal">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="💌 表白墙" android:textSize="20sp"
+            android:textStyle="bold" android:textColor="@color/colorPrimary" />
+        <ImageButton android:id="@+id/btnChat" android:layout_width="40dp" android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/sym_action_chat" android:contentDescription="私信"
+            android:scaleType="centerInside" />
+        <ImageButton android:id="@+id/btnProfile" android:layout_width="40dp" android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_myplaces" android:contentDescription="我的"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+    <!-- Sort tabs -->
+    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:scrollbars="none" android:background="@color/white"
+        android:paddingHorizontal="12dp" android:paddingVertical="8dp">
+        <LinearLayout android:id="@+id/sortTabs" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:orientation="horizontal" android:gap="8dp" />
+    </HorizontalScrollView>
+    <!-- Posts list -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerPosts"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:clipToPadding="false" android:padding="12dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <TextView android:id="@+id/tvEmpty" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1"
+        android:gravity="center" android:text="💭\n\n还没有表白\n成为第一个勇敢的人吧！"
+        android:textSize="16sp" android:textColor="@color/gray" android:visibility="gone" />
+    <!-- FAB -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCreate" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_gravity="bottom|end"
+        android:layout_margin="16dp" android:src="@android:drawable/ic_input_add"
+        android:backgroundTint="@color/colorPrimary" android:tint="@color/white" />
+</LinearLayout>

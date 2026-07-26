@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/white" android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="32dp" android:gravity="center">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="💌" android:textSize="56sp" android:layout_marginTop="60dp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="欢迎回来" android:textSize="28sp" android:textStyle="bold"
+            android:textColor="@color/black" android:layout_marginTop="16dp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="登录你的账号" android:textSize="15sp" android:textColor="@color/gray"
+            android:layout_marginTop="8dp" />
+        <EditText android:id="@+id/etUsername" android:layout_width="match_parent"
+            android:layout_height="48dp" android:background="@drawable/bg_input"
+            android:hint="用户名" android:inputType="text" android:maxLines="1"
+            android:layout_marginTop="40dp" />
+        <EditText android:id="@+id/etPassword" android:layout_width="match_parent"
+            android:layout_height="48dp" android:background="@drawable/bg_input"
+            android:hint="密码" android:inputType="textPassword" android:maxLines="1"
+            android:layout_marginTop="12dp" />
+        <Button android:id="@+id/btnLogin" android:layout_width="match_parent"
+            android:layout_height="48dp" android:background="@drawable/btn_primary"
+            android:text="登录" android:textColor="@color/white" android:textSize="16sp"
+            android:layout_marginTop="24dp" />
+        <TextView android:id="@+id/tvRegister" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="16dp"
+            android:text="没有账号？立即注册" android:textSize="14sp"
+            android:textColor="@color/colorPrimary" />
+    </LinearLayout>
+</ScrollView>

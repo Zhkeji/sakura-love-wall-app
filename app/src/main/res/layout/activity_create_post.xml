@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+        android:background="@color/white" android:elevation="4dp" android:gravity="center_vertical"
+        android:paddingHorizontal="8dp" android:orientation="horizontal">
+        <ImageButton android:id="@+id/btnBack" android:layout_width="40dp" android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert" android:scaleType="centerInside" />
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="写一封表白" android:textSize="18sp"
+            android:textStyle="bold" android:layout_marginStart="8dp" />
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:fillViewport="true">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="16dp">
+            <EditText android:id="@+id/etTitle" android:layout_width="match_parent"
+                android:layout_height="48dp" android:background="@drawable/bg_input"
+                android:hint="标题" android:inputType="text" android:maxLines="1"
+                android:maxLength="100" />
+            <EditText android:id="@+id/etContent" android:layout_width="match_parent"
+                android:layout_height="160dp" android:background="@drawable/bg_input"
+                android:hint="写下你想说的话..." android:inputType="textMultiLine"
+                android:gravity="top" android:layout_marginTop="12dp" android:maxLength="5000" />
+            <EditText android:id="@+id/etTags" android:layout_width="match_parent"
+                android:layout_height="48dp" android:background="@drawable/bg_input"
+                android:hint="标签 (用逗号分隔，如: 暗恋,校园)" android:inputType="text"
+                android:layout_marginTop="12dp" />
+            <CheckBox android:id="@+id/cbAnonymous" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="匿名发布"
+                android:layout_marginTop="12dp" />
+        </LinearLayout>
+    </ScrollView>
+    <Button android:id="@+id/btnPublish" android:layout_width="match_parent"
+        android:layout_height="50dp" android:background="@drawable/btn_primary"
+        android:text="发布表白" android:textColor="@color/white" android:textSize="16sp"
+        android:layout_margin="16dp" />
+</LinearLayout>

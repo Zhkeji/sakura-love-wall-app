@@ -1,0 +1,4 @@
+-keepattributes *Annotation*
+-keep class com.lovewall.app.** { *; }
+-dontwarn okhttp3.**
+-dontwarn okio.**

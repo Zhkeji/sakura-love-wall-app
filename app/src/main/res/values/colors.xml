@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#e74c6f</color>
+    <color name="colorPrimaryDark">#c4375a</color>
+    <color name="colorAccent">#6c5ce7</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#2d3436</color>
+    <color name="gray">#636e72</color>
+    <color name="lightGray">#b2bec3</color>
+    <color name="bg">#f5f6fa</color>
+    <color name="cardBg">#FFFFFF</color>
+    <color name="border">#e1e5e9</color>
+    <color name="liked">#e74c6f</color>
+    <color name="green">#27ae60</color>
+</resources>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/bg">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="16dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+            android:background="@color/white" android:elevation="4dp" android:gravity="center_vertical"
+            android:paddingHorizontal="8dp" android:orientation="horizontal">
+            <ImageButton android:id="@+id/btnBack" android:layout_width="40dp" android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_revert" android:scaleType="centerInside" />
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="个人资料" android:textSize="18sp"
+                android:textStyle="bold" android:layout_marginStart="8dp" />
+        </LinearLayout>
+        <androidx.cardview.widget.CardView android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp" app:cardElevation="2dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="20dp" android:gravity="center">
+                <ImageView android:id="@+id/imgAvatar" android:layout_width="80dp"
+                    android:layout_height="80dp" android:src="@android:drawable/sym_def_app_icon"
+                    android:scaleType="centerCrop" />
+                <EditText android:id="@+id/etNickname" android:layout_width="match_parent"
+                    android:layout_height="48dp" android:background="@drawable/bg_input"
+                    android:hint="昵称" android:gravity="center" android:textSize="16sp"
+                    android:layout_marginTop="16dp" />
+                <EditText android:id="@+id/etBio" android:layout_width="match_parent"
+                    android:layout_height="80dp" android:background="@drawable/bg_input"
+                    android:hint="个人简介" android:gravity="top" android:textSize="14sp"
+                    android:layout_marginTop="12dp" />
+                <Button android:id="@+id/btnSave" android:layout_width="match_parent"
+                    android:layout_height="48dp" android:background="@drawable/btn_primary"
+                    android:text="保存修改" android:textColor="@color/white"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp" app:cardElevation="2dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="修改密码" android:textSize="16sp" android:textStyle="bold" />
+                <EditText android:id="@+id/etOldPwd" android:layout_width="match_parent"
+                    android:layout_height="48dp" android:background="@drawable/bg_input"
+                    android:hint="旧密码" android:inputType="textPassword"
+                    android:layout_marginTop="12dp" />
+                <EditText android:id="@+id/etNewPwd" android:layout_width="match_parent"
+                    android:layout_height="48dp" android:background="@drawable/bg_input"
+                    android:hint="新密码" android:inputType="textPassword"
+                    android:layout_marginTop="12dp" />
+                <Button android:id="@+id/btnChangePwd" android:layout_width="match_parent"
+                    android:layout_height="48dp" android:text="修改密码"
+                    android:textColor="@color/colorPrimary" android:layout_marginTop="12dp"
+                    android:backgroundTint="#fde8ee" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <Button android:id="@+id/btnAdmin" android:layout_width="match_parent" android:layout_height="48dp" android:text="🔧 管理后台" android:textColor="@color/colorPrimary" android:layout_marginTop="16dp" android:backgroundTint="#fde8ee" android:visibility="gone" />
+        <Button android:id="@+id/btnAbout" android:layout_width="match_parent"
+            android:layout_height="48dp" android:text="关于 & 检查更新"
+            android:textColor="@color/gray" android:layout_marginTop="16dp"
+            android:backgroundTint="@color/white" />
+        <Button android:id="@+id/btnLogout" android:layout_width="match_parent"
+            android:layout_height="48dp" android:text="退出登录"
+            android:textColor="#e74c3c" android:layout_marginTop="8dp"
+            android:backgroundTint="@color/white" />
+    </LinearLayout>
+</ScrollView>
