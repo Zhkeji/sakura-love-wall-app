@@ -11,9 +11,11 @@ public class Post {
     public String images = "[]";
     public int likes;
     public int comments_count;
+    public Integer views = 0;
     public String status;
     public int is_anonymous;
     public String tags = "[]";
+    public String category = "confession";
     public String created_at;
     public String author_name;
     public String author_avatar;

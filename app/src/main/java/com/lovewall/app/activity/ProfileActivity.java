@@ -3,9 +3,7 @@ package com.lovewall.app.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -21,11 +19,16 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         Prefs prefs = new Prefs(this);
 
-        ImageButton btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
+        // 个人信息卡片
+        ImageView imgAvatar = findViewById(R.id.imgAvatar);
+        TextView tvNickname = findViewById(R.id.tvNickname);
+        TextView tvBio = findViewById(R.id.tvBio);
         EditText etNick = findViewById(R.id.etNickname);
         EditText etBio = findViewById(R.id.etBio);
+
+        tvNickname.setText(prefs.getNickname());
         etNick.setText(prefs.getNickname());
 
         // 管理员入口
@@ -37,21 +40,24 @@ public class ProfileActivity extends AppCompatActivity {
             btnAdmin.setOnClickListener(v -> startActivity(new Intent(this, AdminDashboardActivity.class)));
         }
 
-        // Load profile
+        // 加载个人信息
         new Thread(() -> {
             try {
                 String resp = ApiClient.get("/api/auth/me", prefs.getToken());
                 JsonObject json = JsonParser.parseString(resp).getAsJsonObject();
                 JsonObject user = json.getAsJsonObject("user");
                 runOnUiThread(() -> {
+                    tvNickname.setText(user.get("nickname").getAsString());
                     etNick.setText(user.get("nickname").getAsString());
-                    if (user.has("bio") && !user.get("bio").isJsonNull())
+                    if (user.has("bio") && !user.get("bio").isJsonNull()) {
+                        tvBio.setText(user.get("bio").getAsString());
                         etBio.setText(user.get("bio").getAsString());
+                    }
                 });
             } catch (Exception e) {}
         }).start();
 
-        // Save profile
+        // 保存资料
         findViewById(R.id.btnSave).setOnClickListener(v -> {
             String nickname = etNick.getText().toString().trim();
             String bio = etBio.getText().toString().trim();
@@ -68,6 +74,8 @@ public class ProfileActivity extends AppCompatActivity {
                         if (json.has("user")) {
                             JsonObject user = json.getAsJsonObject("user");
                             prefs.setNickname(user.get("nickname").getAsString());
+                            tvNickname.setText(user.get("nickname").getAsString());
+                            tvBio.setText(bio);
                             ToastUtil.show(this, "保存成功");
                         } else {
                             ToastUtil.show(this, json.has("error") ? json.get("error").getAsString() : "保存失败");
@@ -79,7 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
             }).start();
         });
 
-        // Change password
+        // 修改密码
         findViewById(R.id.btnChangePwd).setOnClickListener(v -> {
             String oldPwd = ((EditText) findViewById(R.id.etOldPwd)).getText().toString().trim();
             String newPwd = ((EditText) findViewById(R.id.etNewPwd)).getText().toString().trim();
@@ -106,10 +114,10 @@ public class ProfileActivity extends AppCompatActivity {
             }).start();
         });
 
-        // About
+        // 关于
         findViewById(R.id.btnAbout).setOnClickListener(v -> startActivity(new Intent(this, AboutActivity.class)));
 
-        // Logout
+        // 退出登录
         findViewById(R.id.btnLogout).setOnClickListener(v -> {
             prefs.clear();
             startActivity(new Intent(this, LoginActivity.class));

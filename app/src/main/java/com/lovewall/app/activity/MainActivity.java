@@ -3,17 +3,13 @@ package com.lovewall.app.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.lovewall.app.R;
 import com.lovewall.app.adapter.PostAdapter;
 import com.lovewall.app.api.ApiClient;
@@ -32,8 +28,12 @@ public class MainActivity extends AppCompatActivity {
     private Prefs prefs;
     private int currentPage = 1;
     private String currentSort = "latest";
+    private String searchKeyword = "";
     private boolean hasMore = true;
     private boolean isLoading = false;
+
+    // 排序按钮
+    private TextView tabLatest, tabHot, tabViews, tabComments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +46,28 @@ public class MainActivity extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tvEmpty);
         FloatingActionButton fab = findViewById(R.id.fabCreate);
 
+        // 排序标签
+        tabLatest = findViewById(R.id.tabLatest);
+        tabHot = findViewById(R.id.tabHot);
+        tabViews = findViewById(R.id.tabViews);
+        tabComments = findViewById(R.id.tabComments);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new PostAdapter(posts, post -> {
-            Intent intent = new Intent(this, PostDetailActivity.class);
-            intent.putExtra("postId", post.id);
-            startActivity(intent);
+        adapter = new PostAdapter(posts, new PostAdapter.OnPostClickListener() {
+            @Override
+            public void onPostClick(Post post) {
+                Intent intent = new Intent(MainActivity.this, PostDetailActivity.class);
+                intent.putExtra("postId", post.id);
+                startActivity(intent);
+            }
+            @Override
+            public void onLikeClick(Post post, int position) {
+                likePost(post, position);
+            }
+            @Override
+            public void onExpandClick(Post post, int position) {
+                adapter.toggleExpand(position);
+            }
         });
         recyclerView.setAdapter(adapter);
 
@@ -59,40 +76,67 @@ public class MainActivity extends AppCompatActivity {
 
         fab.setOnClickListener(v -> startActivity(new Intent(this, CreatePostActivity.class)));
 
+        // 搜索
+        EditText etSearch = findViewById(R.id.etSearch);
+        findViewById(R.id.btnSearch).setOnClickListener(v -> {
+            searchKeyword = etSearch.getText().toString().trim();
+            refresh();
+        });
+        etSearch.setOnEditorActionListener((v, actionId, event) -> {
+            searchKeyword = etSearch.getText().toString().trim();
+            refresh();
+            return true;
+        });
+
+        // 排序标签点击
+        setupSortTabs();
+
+        // 侧边栏按钮
         findViewById(R.id.btnChat).setOnClickListener(v -> startActivity(new Intent(this, ChatListActivity.class)));
         findViewById(R.id.btnProfile).setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
 
-        setupSortTabs();
         refresh();
     }
 
     private void setupSortTabs() {
-        android.widget.LinearLayout tabs = findViewById(R.id.sortTabs);
-        String[] sorts = {"最新", "最热", "评论"};
-        String[] sortKeys = {"latest", "hot", "comments"};
-        for (int i = 0; i < sorts.length; i++) {
-            TextView tv = new TextView(this);
-            tv.setText(sorts[i]);
-            tv.setTextSize(13);
-            tv.setPadding(32, 16, 32, 16);
-            tv.setBackgroundResource(R.drawable.bg_tag);
-            tv.setTextColor(getResources().getColor(i == 0 ? R.color.colorPrimary : R.color.gray));
-            final int idx = i;
-            tv.setOnClickListener(v -> {
-                currentSort = sortKeys[idx];
-                for (int j = 0; j < tabs.getChildCount(); j++) {
-                    ((TextView) tabs.getChildAt(j)).setTextColor(getResources().getColor(j == idx ? R.color.colorPrimary : R.color.gray));
-                }
-                refresh();
-            });
-            tabs.addView(tv);
-        }
+        View.OnClickListener tabClick = v -> {
+            resetTabColors();
+            v.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            ((TextView) v).setTextColor(getResources().getColor(R.color.white));
+
+            int id = v.getId();
+            if (id == R.id.tabLatest) currentSort = "latest";
+            else if (id == R.id.tabHot) currentSort = "hot";
+            else if (id == R.id.tabViews) currentSort = "views";
+            else if (id == R.id.tabComments) currentSort = "comments";
+
+            refresh();
+        };
+
+        tabLatest.setOnClickListener(tabClick);
+        tabHot.setOnClickListener(tabClick);
+        tabViews.setOnClickListener(tabClick);
+        tabComments.setOnClickListener(tabClick);
+
+        // 默认选中最新
+        tabLatest.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        tabLatest.setTextColor(getResources().getColor(R.color.white));
+    }
+
+    private void resetTabColors() {
+        int bg = getResources().getColor(R.color.white);
+        int textColor = getResources().getColor(R.color.gray);
+        tabLatest.setBackgroundColor(bg); tabLatest.setTextColor(textColor);
+        tabHot.setBackgroundColor(bg); tabHot.setTextColor(textColor);
+        tabViews.setBackgroundColor(bg); tabViews.setTextColor(textColor);
+        tabComments.setBackgroundColor(bg); tabComments.setTextColor(textColor);
     }
 
     private void refresh() {
         currentPage = 1;
         hasMore = true;
         posts.clear();
+        adapter.notifyDataSetChanged();
         loadPosts();
     }
 
@@ -104,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() -> {
             try {
                 String url = "/api/posts?page=" + currentPage + "&sort=" + currentSort;
+                if (!searchKeyword.isEmpty()) {
+                    url += "&search=" + java.net.URLEncoder.encode(searchKeyword, "UTF-8");
+                }
                 String resp = ApiClient.get(url, prefs.getToken());
                 JsonObject json = JsonParser.parseString(resp).getAsJsonObject();
                 JsonArray arr = json.getAsJsonArray("posts");
@@ -135,6 +182,22 @@ public class MainActivity extends AppCompatActivity {
                     if (posts.isEmpty()) ToastUtil.show(this, "加载失败");
                 });
             }
+        }).start();
+    }
+
+    private void likePost(Post post, int position) {
+        new Thread(() -> {
+            try {
+                String resp = ApiClient.post("/api/posts/" + post.id + "/like", "{}", prefs.getToken());
+                JsonObject json = JsonParser.parseString(resp).getAsJsonObject();
+                boolean liked = json.get("liked").getAsBoolean();
+                int likes = json.get("likes").getAsInt();
+                runOnUiThread(() -> {
+                    post.isLiked = liked;
+                    post.likes = likes;
+                    adapter.notifyItemChanged(position);
+                });
+            } catch (Exception e) {}
         }).start();
     }
 

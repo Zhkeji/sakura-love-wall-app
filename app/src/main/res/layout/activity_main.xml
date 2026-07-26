@@ -2,42 +2,88 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical" android:background="@color/bg">
-    <!-- Toolbar -->
+
+    <!-- 顶部导航 -->
     <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
         android:background="@color/white" android:elevation="4dp" android:gravity="center_vertical"
         android:paddingHorizontal="16dp" android:orientation="horizontal">
         <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="💌 表白墙" android:textSize="20sp"
+            android:layout_weight="1" android:text="🌸 樱花表白墙" android:textSize="18sp"
             android:textStyle="bold" android:textColor="@color/colorPrimary" />
         <ImageButton android:id="@+id/btnChat" android:layout_width="40dp" android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/sym_action_chat" android:contentDescription="私信"
-            android:scaleType="centerInside" />
+            android:src="@android:drawable/sym_action_chat" android:scaleType="centerInside" />
         <ImageButton android:id="@+id/btnProfile" android:layout_width="40dp" android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_myplaces" android:contentDescription="我的"
-            android:scaleType="centerInside" />
+            android:src="@android:drawable/ic_menu_myplaces" android:scaleType="centerInside" />
     </LinearLayout>
-    <!-- Sort tabs -->
+
+    <!-- 搜索栏 -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="@color/white" android:padding="12dp"
+        android:orientation="horizontal" android:gravity="center_vertical">
+        <EditText android:id="@+id/etSearch"
+            android:layout_width="0dp" android:layout_height="44dp"
+            android:layout_weight="1" android:background="@drawable/bg_input"
+            android:hint="🔍 搜索表白内容或表白对象..." android:textSize="14sp"
+            android:paddingHorizontal="16dp" android:maxLines="1"
+            android:imeOptions="actionSearch" android:inputType="text" />
+        <Button android:id="@+id/btnSearch"
+            android:layout_width="wrap_content" android:layout_height="44dp"
+            android:text="搜索" android:textSize="14sp"
+            android:textColor="@color/white" android:backgroundTint="@color/colorPrimary"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- 排序标签 -->
     <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content"
         android:scrollbars="none" android:background="@color/white"
         android:paddingHorizontal="12dp" android:paddingVertical="8dp">
-        <LinearLayout android:id="@+id/sortTabs" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:orientation="horizontal" android:gap="8dp" />
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gap="8dp">
+            <TextView android:id="@+id/tabLatest"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:gravity="center" android:paddingHorizontal="16dp"
+                android:text="🕐 最新发布" android:textSize="13sp"
+                android:textColor="@color/gray" android:background="@drawable/bg_tag"
+                android:clickable="true" />
+            <TextView android:id="@+id/tabHot"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:gravity="center" android:paddingHorizontal="16dp"
+                android:text="🔥 最受欢迎" android:textSize="13sp"
+                android:textColor="@color/gray" android:background="@drawable/bg_tag"
+                android:clickable="true" />
+            <TextView android:id="@+id/tabViews"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:gravity="center" android:paddingHorizontal="16dp"
+                android:text="👁 浏览最多" android:textSize="13sp"
+                android:textColor="@color/gray" android:background="@drawable/bg_tag"
+                android:clickable="true" />
+            <TextView android:id="@+id/tabComments"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:gravity="center" android:paddingHorizontal="16dp"
+                android:text="💬 最多评论" android:textSize="13sp"
+                android:textColor="@color/gray" android:background="@drawable/bg_tag"
+                android:clickable="true" />
+        </LinearLayout>
     </HorizontalScrollView>
-    <!-- Posts list -->
+
+    <!-- 帖子列表 -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh" android:layout_width="match_parent"
         android:layout_height="0dp" android:layout_weight="1">
-        <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerPosts"
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            android:clipToPadding="false" android:padding="12dp" />
+        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerPosts"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:clipToPadding="false" android:padding="12dp" />
+            <TextView android:id="@+id/tvEmpty"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:gravity="center" android:text="💭\n\n还没有表白\n成为第一个勇敢的人吧！"
+                android:textSize="16sp" android:textColor="@color/gray" android:visibility="gone" />
+        </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    <TextView android:id="@+id/tvEmpty" android:layout_width="match_parent"
-        android:layout_height="0dp" android:layout_weight="1"
-        android:gravity="center" android:text="💭\n\n还没有表白\n成为第一个勇敢的人吧！"
-        android:textSize="16sp" android:textColor="@color/gray" android:visibility="gone" />
-    <!-- FAB -->
+
+    <!-- 发布按钮 -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCreate" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:layout_gravity="bottom|end"
