@@ -30,5 +30,6 @@
         <activity android:name=".activity.AdminReportActivity" />
         <activity android:name=".activity.AdminUserActivity" />
         <activity android:name=".activity.AdminManageAdminsActivity" />
+        <activity android:name=".activity.AdminChatActivity" />
     </application>
 </manifest>

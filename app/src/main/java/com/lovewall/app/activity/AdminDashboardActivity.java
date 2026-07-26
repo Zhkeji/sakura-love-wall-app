@@ -31,6 +31,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         findViewById(R.id.btnManagePosts).setOnClickListener(v -> startActivity(new Intent(this, AdminPostActivity.class)));
         findViewById(R.id.btnManageComments).setOnClickListener(v -> startActivity(new Intent(this, AdminCommentActivity.class)));
         findViewById(R.id.btnManageReports).setOnClickListener(v -> startActivity(new Intent(this, AdminReportActivity.class)));
+        findViewById(R.id.btnManageChats).setOnClickListener(v -> startActivity(new Intent(this, AdminChatActivity.class)));
 
         // 超管专属
         View superSection = findViewById(R.id.superAdminSection);

@@ -68,6 +68,9 @@
             <Button android:id="@+id/btnManageReports" android:layout_width="match_parent" android:layout_height="48dp"
                 android:text="🚩 举报处理" android:textColor="@color/black" android:backgroundTint="@color/white"
                 android:layout_marginBottom="8dp" android:gravity="start" android:paddingStart="16dp" />
+            <Button android:id="@+id/btnManageChats" android:layout_width="match_parent" android:layout_height="48dp"
+                android:text="💬 私信管理（可介入）" android:textColor="@color/black" android:backgroundTint="@color/white"
+                android:layout_marginBottom="8dp" android:gravity="start" android:paddingStart="16dp" />
             <!-- 超管专属 -->
             <LinearLayout android:id="@+id/superAdminSection" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
