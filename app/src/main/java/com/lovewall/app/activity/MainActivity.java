@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private String searchKeyword = "";
     private boolean hasMore = true;
     private boolean isLoading = false;
-
-    // 排序按钮
     private TextView tabLatest, tabHot, tabViews, tabComments;
 
     @Override
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tvEmpty);
         FloatingActionButton fab = findViewById(R.id.fabCreate);
 
-        // 排序标签
         tabLatest = findViewById(R.id.tabLatest);
         tabHot = findViewById(R.id.tabHot);
         tabViews = findViewById(R.id.tabViews);
@@ -61,13 +58,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             @Override
-            public void onLikeClick(Post post, int position) {
-                likePost(post, position);
-            }
+            public void onLikeClick(Post post, int position) { likePost(post, position); }
             @Override
-            public void onExpandClick(Post post, int position) {
-                adapter.toggleExpand(position);
-            }
+            public void onExpandClick(Post post, int position) { adapter.toggleExpand(position); }
+            @Override
+            public void onBookmarkClick(Post post, int position) { toggleBookmark(post, position); }
+            @Override
+            public void onShareClick(Post post) { sharePost(post); }
         });
         recyclerView.setAdapter(adapter);
 
@@ -76,22 +73,14 @@ public class MainActivity extends AppCompatActivity {
 
         fab.setOnClickListener(v -> startActivity(new Intent(this, CreatePostActivity.class)));
 
-        // 搜索
         EditText etSearch = findViewById(R.id.etSearch);
         findViewById(R.id.btnSearch).setOnClickListener(v -> {
             searchKeyword = etSearch.getText().toString().trim();
             refresh();
         });
-        etSearch.setOnEditorActionListener((v, actionId, event) -> {
-            searchKeyword = etSearch.getText().toString().trim();
-            refresh();
-            return true;
-        });
 
-        // 排序标签点击
         setupSortTabs();
 
-        // 侧边栏按钮
         findViewById(R.id.btnChat).setOnClickListener(v -> startActivity(new Intent(this, ChatListActivity.class)));
         findViewById(R.id.btnProfile).setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
 
@@ -103,22 +92,17 @@ public class MainActivity extends AppCompatActivity {
             resetTabColors();
             v.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             ((TextView) v).setTextColor(getResources().getColor(R.color.white));
-
             int id = v.getId();
             if (id == R.id.tabLatest) currentSort = "latest";
             else if (id == R.id.tabHot) currentSort = "hot";
             else if (id == R.id.tabViews) currentSort = "views";
             else if (id == R.id.tabComments) currentSort = "comments";
-
             refresh();
         };
-
         tabLatest.setOnClickListener(tabClick);
         tabHot.setOnClickListener(tabClick);
         tabViews.setOnClickListener(tabClick);
         tabComments.setOnClickListener(tabClick);
-
-        // 默认选中最新
         tabLatest.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         tabLatest.setTextColor(getResources().getColor(R.color.white));
     }
@@ -148,9 +132,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() -> {
             try {
                 String url = "/api/posts?page=" + currentPage + "&sort=" + currentSort;
-                if (!searchKeyword.isEmpty()) {
-                    url += "&search=" + java.net.URLEncoder.encode(searchKeyword, "UTF-8");
-                }
+                if (!searchKeyword.isEmpty()) url += "&search=" + java.net.URLEncoder.encode(searchKeyword, "UTF-8");
                 String resp = ApiClient.get(url, prefs.getToken());
                 JsonObject json = JsonParser.parseString(resp).getAsJsonObject();
                 JsonArray arr = json.getAsJsonArray("posts");
@@ -158,10 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
                 List<Post> newPosts = new ArrayList<>();
                 Gson gson = new Gson();
-                for (JsonElement el : arr) {
-                    Post p = gson.fromJson(el, Post.class);
-                    newPosts.add(p);
-                }
+                for (JsonElement el : arr) newPosts.add(gson.fromJson(el, Post.class));
 
                 boolean more = currentPage < pag.get("totalPages").getAsInt();
 
@@ -190,15 +169,43 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String resp = ApiClient.post("/api/posts/" + post.id + "/like", "{}", prefs.getToken());
                 JsonObject json = JsonParser.parseString(resp).getAsJsonObject();
-                boolean liked = json.get("liked").getAsBoolean();
-                int likes = json.get("likes").getAsInt();
                 runOnUiThread(() -> {
-                    post.isLiked = liked;
-                    post.likes = likes;
+                    post.isLiked = json.get("liked").getAsBoolean();
+                    post.likes = json.get("likes").getAsInt();
                     adapter.notifyItemChanged(position);
                 });
             } catch (Exception e) {}
         }).start();
+    }
+
+    private void toggleBookmark(Post post, int position) {
+        new Thread(() -> {
+            try {
+                String method = post.isBookmarked ? "DELETE" : "POST";
+                String resp;
+                if (post.isBookmarked) {
+                    resp = ApiClient.delete("/api/bookmarks/" + post.id, prefs.getToken());
+                } else {
+                    resp = ApiClient.post("/api/bookmarks/" + post.id, "{}", prefs.getToken());
+                }
+                runOnUiThread(() -> {
+                    post.isBookmarked = !post.isBookmarked;
+                    adapter.notifyItemChanged(position);
+                    ToastUtil.show(this, post.isBookmarked ? "收藏成功 🔖" : "已取消收藏");
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> ToastUtil.show(this, "操作失败"));
+            }
+        }).start();
+    }
+
+    private void sharePost(Post post) {
+        String shareUrl = ApiClient.BASE_URL + "/?post=" + post.id;
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, post.title);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, post.title + "\n" + shareUrl);
+        startActivity(Intent.createChooser(shareIntent, "分享到"));
     }
 
     @Override

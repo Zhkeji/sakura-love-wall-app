@@ -17,6 +17,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         void onPostClick(Post post);
         void onLikeClick(Post post, int position);
         void onExpandClick(Post post, int position);
+        void onBookmarkClick(Post post, int position);
+        void onShareClick(Post post);
     }
 
     private final List<Post> posts;
@@ -29,11 +31,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public void toggleExpand(int position) {
-        if (expandedPositions.contains(position)) {
-            expandedPositions.remove(position);
-        } else {
-            expandedPositions.add(position);
-        }
+        if (expandedPositions.contains(position)) expandedPositions.remove(position);
+        else expandedPositions.add(position);
         notifyItemChanged(position);
     }
 
@@ -46,10 +45,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder h, int position) {
         Post p = posts.get(position);
 
-        // 标题
+        // 置顶标识
+        if (p.is_pinned == 1) {
+            h.tvPinned.setVisibility(View.VISIBLE);
+        } else {
+            h.tvPinned.setVisibility(View.GONE);
+        }
+
         h.tvTitle.setText(p.title);
 
-        // 内容 - 折叠/展开
+        // 内容折叠/展开
         boolean isExpanded = expandedPositions.contains(position);
         boolean isLong = p.content != null && p.content.length() > 150;
         if (isLong && !isExpanded) {
@@ -64,11 +69,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             h.tvExpand.setOnClickListener(v -> listener.onExpandClick(p, position));
         }
 
-        // 作者信息
         h.tvAuthor.setText(p.author_name != null ? p.author_name : "匿名用户");
         h.tvTime.setText(TimeUtil.getTimeAgo(p.created_at));
 
-        // 分类标签
+        // 分类
         if (p.category != null && !p.category.isEmpty()) {
             h.tvCategory.setVisibility(View.VISIBLE);
             switch (p.category) {
@@ -97,13 +101,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         h.btnLike.setTextColor(p.isLiked ? Color.parseColor("#e74c6f") : Color.parseColor("#999999"));
         h.btnLike.setOnClickListener(v -> listener.onLikeClick(p, position));
 
-        // 评论数
+        // 评论
         h.tvComments.setText("💬 " + p.comments_count);
 
         // 浏览量
         h.tvViews.setText("👁 " + (p.views != null ? p.views : 0));
 
-        // 点击整个卡片
+        // 收藏
+        h.btnBookmark.setText(p.isBookmarked ? "🔖" : "🏷️");
+        h.btnBookmark.setOnClickListener(v -> listener.onBookmarkClick(p, position));
+
+        // 分享
+        h.btnShare.setOnClickListener(v -> listener.onShareClick(p));
+
         h.itemView.setOnClickListener(v -> listener.onPostClick(p));
     }
 
@@ -111,10 +121,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public int getItemCount() { return posts.size(); }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvContent, tvExpand, tvAuthor, tvTime, tvCategory, tvTags;
-        TextView btnLike, tvComments, tvViews;
+        TextView tvPinned, tvTitle, tvContent, tvExpand, tvAuthor, tvTime, tvCategory, tvTags;
+        TextView btnLike, tvComments, tvViews, btnBookmark, btnShare;
         ViewHolder(View v) {
             super(v);
+            tvPinned = v.findViewById(R.id.tvPinned);
             tvTitle = v.findViewById(R.id.tvTitle);
             tvContent = v.findViewById(R.id.tvContent);
             tvExpand = v.findViewById(R.id.tvExpand);
@@ -125,6 +136,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             btnLike = v.findViewById(R.id.btnLike);
             tvComments = v.findViewById(R.id.tvComments);
             tvViews = v.findViewById(R.id.tvViews);
+            btnBookmark = v.findViewById(R.id.btnBookmark);
+            btnShare = v.findViewById(R.id.btnShare);
         }
     }
 }

@@ -14,6 +14,7 @@ public class Post {
     public Integer views = 0;
     public String status;
     public int is_anonymous;
+    public int is_pinned = 0;
     public String tags = "[]";
     public String category = "confession";
     public String created_at;
@@ -21,6 +22,7 @@ public class Post {
     public String author_avatar;
     public String author_id;
     public boolean isLiked;
+    public boolean isBookmarked;
 
     public List<String> getImageList() {
         List<String> list = new ArrayList<>();
@@ -28,8 +30,7 @@ public class Post {
             if (images != null && !images.equals("[]")) {
                 String cleaned = images.replace("[", "").replace("]", "").replace("\"", "").replace(" ", "");
                 if (!cleaned.isEmpty()) {
-                    String[] parts = cleaned.split(",");
-                    for (String p : parts) {
+                    for (String p : cleaned.split(",")) {
                         if (!p.trim().isEmpty()) list.add(p.trim());
                     }
                 }
@@ -44,8 +45,7 @@ public class Post {
             if (tags != null && !tags.equals("[]")) {
                 String cleaned = tags.replace("[", "").replace("]", "").replace("\"", "").replace(" ", "");
                 if (!cleaned.isEmpty()) {
-                    String[] parts = cleaned.split(",");
-                    for (String p : parts) {
+                    for (String p : cleaned.split(",")) {
                         if (!p.trim().isEmpty()) list.add(p.trim());
                     }
                 }
