@@ -9,10 +9,14 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_revert" android:scaleType="centerInside" />
         <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="管理员管理" android:textSize="18sp"
+            android:layout_weight="1" android:text="🛡️ 管理员管理" android:textSize="18sp"
             android:textStyle="bold" android:layout_marginStart="8dp" />
+        <Button android:id="@+id/btnAddAdmin" android:layout_width="wrap_content" android:layout_height="36dp"
+            android:text="+ 添加" android:textSize="13sp" android:textColor="@color/white"
+            android:backgroundTint="@color/colorPrimary" />
     </LinearLayout>
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="管理员管理功能\n\n在网站超管后台可以添加/删除管理员" android:textSize="16sp"
-        android:textColor="@color/gray" android:gravity="center" android:padding="40dp" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:id="@+id/adminsContainer" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp" />
+    </ScrollView>
 </LinearLayout>

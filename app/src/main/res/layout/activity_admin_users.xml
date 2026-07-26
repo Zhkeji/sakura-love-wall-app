@@ -9,10 +9,11 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_revert" android:scaleType="centerInside" />
         <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="用户管理" android:textSize="18sp"
+            android:layout_weight="1" android:text="👥 用户管理" android:textSize="18sp"
             android:textStyle="bold" android:layout_marginStart="8dp" />
     </LinearLayout>
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="用户管理功能\n\n在网站后台可以封禁/解封用户" android:textSize="16sp"
-        android:textColor="@color/gray" android:gravity="center" android:padding="40dp" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:id="@+id/usersContainer" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp" />
+    </ScrollView>
 </LinearLayout>
