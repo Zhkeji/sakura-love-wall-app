@@ -20,8 +20,14 @@
             <TextView android:id="@+id/tvStatus" android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:textSize="12sp" android:layout_marginTop="2dp" />
         </LinearLayout>
-        <Button android:id="@+id/btnBan" android:layout_width="wrap_content" android:layout_height="36dp"
-            android:text="封禁" android:textSize="12sp" android:textColor="#ef4444"
-            android:backgroundTint="@color/white" android:visibility="gone" />
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gap="6dp">
+            <Button android:id="@+id/btnDetail" android:layout_width="wrap_content" android:layout_height="36dp"
+                android:text="详情" android:textSize="11sp" android:textColor="@color/colorPrimary"
+                android:backgroundTint="@color/white" android:visibility="gone" />
+            <Button android:id="@+id/btnBan" android:layout_width="wrap_content" android:layout_height="36dp"
+                android:text="封禁" android:textSize="11sp" android:textColor="#ef4444"
+                android:backgroundTint="@color/white" android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
